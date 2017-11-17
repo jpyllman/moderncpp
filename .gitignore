@@ -15,6 +15,7 @@ Makefile.in
 /compile
 /config.guess
 /config.h.in
+/config.hpp.in
 /config.sub
 /configure
 /configure.scan
@@ -75,3 +76,6 @@ autom4te.cache
 
 # Clang tools
 compile_commands.json
+
+# emacs
+*~
