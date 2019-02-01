@@ -5,34 +5,60 @@
 #include "cls-log.hpp"
 
 #include <iostream>
+#include <locale>
 
 namespace cls { namespace log {
 
-basic::basic() { std::clog << "basic::basic() [" << this << "]\n"; }
-
-basic::~basic() { std::clog << "basic::~basic() [" << this << "]\n"; }
-
-basic::basic( basic const &a )
+basic::basic()
 {
-  std::clog << "basic::basic( basic const & ) [" << this << "][" << &a << "]\n";
+  std::clog << "basic::basic()                           { c='" << c << "', o='"
+            << o << "' }[" << this << "]\n";
 }
 
-basic &basic::operator=( basic const &a )
+basic::basic( char z )
 {
-  std::clog << "basic& basic::operator=( basic const & ) [" << this << "]["
-            << &a << "]\n";
+  iset( z );
+  std::clog << "basic::basic( char )                     { c='" << c << "', o='"
+            << o << "' }[" << this << "]\n";
+}
+
+basic::~basic()
+{
+  std::clog << "basic::~basic()                          { c='" << c << "', o='"
+            << o << "' }[" << this << "]\n";
+}
+
+basic::basic( basic const &z )
+{
+  iset( std::toupper( z.c, std::locale() ) );
+  std::clog << "basic::basic( basic const & )            { c='" << c << "', o='"
+            << o << "' }[" << this << "][" << &z << "]\n";
+}
+
+basic &basic::operator=( basic const &z )
+{
+  iset( std::toupper( z.c, std::locale() ) );
+  std::clog << "basic& basic::operator=( basic const & ) { c='" << c << "', o='"
+            << o << "' }[" << this << "][" << &z << "]\n";
+
   return *this;
 }
 
-basic::basic( basic &&a )
+basic::basic( basic &&z )
 {
-  std::clog << "basic::basic( basic && ) [" << this << "][" << &a << "]\n";
+  iset( std::toupper( z.c, std::locale() ) );
+  z.iset( '-' );
+  std::clog << "basic::basic( basic && )                 { c='" << c << "', o='"
+            << o << "' }[" << this << "][" << &z << "]\n";
 }
 
-basic &basic::operator=( basic &&a )
+basic &basic::operator=( basic &&z )
 {
-  std::clog << "basic& basic::operator=( basic && ) [" << this << "][" << &a
-            << "]\n";
+  iset( std::toupper( z.c, std::locale() ) );
+  z.iset( '_' );
+  std::clog << "basic& basic::operator=( basic && )      { c='" << c << "', o='"
+            << o << "' }[" << this << "][" << &z << "]\n";
+
   return *this;
 }
 

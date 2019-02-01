@@ -3,17 +3,29 @@
 
 namespace cls { namespace log {
 
-class basic
+class basic final
 {
+  char c = ' ';
+  char o = '|';
+
 public:
+  // constructors
   basic();
+  explicit basic( char );
+
+  // destructor
   ~basic();
 
+  // copy constructor/assignment
   basic( basic const & );
   basic &operator=( basic const & );
 
+  // move constructor/assignment
   basic( basic && );
   basic &operator=( basic && );
+
+private:
+  void iset( char const z ) { o = c; c = z; }
 };
 
 }} // namespace cls::log
