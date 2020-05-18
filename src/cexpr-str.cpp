@@ -59,7 +59,7 @@ constexpr int powerX( int const &x )
 {
   int y = 1;
   int z = absX( x );
-  while( z > 10 )
+  while( z >= 10 )
   {
     z /= 10;
     ++y;
@@ -71,13 +71,17 @@ template <int N>
 constexpr auto to_car()
 {
   car<powerX( N ) + 1> z;
-  int j = N;
+  int j = absX(N);
   for( int i = 0; i < powerX( N ); ++i, j /= 10 )
   {
     z[powerX( N ) - i - 1] = (char)( '0' + ( j % 10 ) );
   }
   z[powerX( N )] = 0;
-  return z;
+
+  if constexpr ( N < 0 )
+    return car{"-"} + z;
+  else
+    return z;
 }
 
 constexpr auto frmtx_int()
@@ -85,11 +89,13 @@ constexpr auto frmtx_int()
   return car{u8"{:#0"} + to_car<sizeof( int ) * 2>() + car{u8"x}"};
 }
 
-template<size_t N>
-struct olle
-{
-  char array[N];
-};
+// template<size_t N>
+// struct olle
+// {
+//   char array[N];
+// };
+
+constexpr static car gccver = car{"G++ "} + to_car<__GNUC__>() + car{"."} + to_car<__GNUC_MINOR__>();
 
 int main( int, char *[], char *[] )
 {
@@ -105,8 +111,13 @@ int main( int, char *[], char *[] )
   constexpr auto d = car{u8"räksmörgås är gott att ta någon gång i bland"};
   static_assert( sizeof( d ) == 51 );
 
+  constexpr auto e = to_car<-99>();
+  static_assert( sizeof( e ) == 4 );
+
   std::cout << a.data() << " -> " << a.size() << ", " << a.max_size() << "\n";
   std::cout << b.data() << " -> " << b.size() << ", " << b.max_size() << "\n";
   std::cout << c.data() << " -> " << c.size() << ", " << c.max_size() << "\n";
   std::cout << d.data() << " -> " << d.size() << ", " << d.max_size() << "\n";
+  std::cout << e.data() << " -> " << e.size() << ", " << e.max_size() << "\n";
+  std::cout << gccver.data() << "\n";
 }

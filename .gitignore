@@ -49,5 +49,6 @@ compile_commands.json
 
 # local files to project
 src/cexpr-str
+src/cexpr-str2
 src/cls-basic
 src/pp-basic
